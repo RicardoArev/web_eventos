@@ -1,16 +1,21 @@
-const obtenerProductos = async (filters) => {
-  let values = await fetch("data.json")
+const getProduct = async (filters) =>
+{
+  let values = await fetch('data.json')
     .then((response) => response.json())
     .then((response) => response.items);
 
-  if (filters) {
+  if (filters)
+  {
     const { precioMinimo, precioMaximo } = filters;
-    values = values.filter((producto) => {
+    values = values.filter((producto) =>
+    {
       const precio = parseFloat(producto.price);
-      if (precioMinimo && !precioMaximo) {
+      if (precioMinimo && !precioMaximo)
+      {
         return precioMinimo <= precio;
       }
-      if (!precioMinimo && precioMaximo) {
+      if (!precioMinimo && precioMaximo)
+      {
         return precio <= precioMaximo;
       }
       return precioMinimo <= precio && precio <= precioMaximo;
@@ -19,87 +24,140 @@ const obtenerProductos = async (filters) => {
   return values;
 };
 
-const showproduct = (response) => {
-  const container = document.getElementById("section-product");
-  container.innerHTML = "";
-  response.map((productInformation) => {
+const deleteProduct = (id) => 
+{
+  let product = JSON.parse(localStorage.getItem('carrito')) || [];
+  product = product.filter((product) => product.id !== id);
+
+  localStorage.setItem('carrito', JSON.stringify(product));
+  showCart();
+}
+
+const showProduct = (response) =>
+{
+  const container = document.getElementById('section-product');
+  container.innerHTML = '';
+  response.map((productInformation) =>
+  {
     const product = `<div class="card">
-        <div class="card__image"><img class="image" src="${productInformation.image_path} " /></div>
+        <div class="card__image">
+          <img class="image" src="${productInformation.image_path} " />
+        </div>
         <div class="card__description">
-          <span class="item">${productInformation.name} </span><br />
-          <span class="item__description"
-            >${productInformation.description}</span
-          >
+          <div>
+            <p class="item">${productInformation.name} </p>
+            <p class="item__description">${productInformation.description}</p>
+          </div>
           <div class="buy">
-            <div class="buy__button" onclick="productSubmit(this)" data-product-information='${JSON.stringify(productInformation)}'>
+            <button class="buy__button" onclick="addCartProduct(this)" data-product-information='${JSON.stringify(productInformation)}'>
               Añadir al carrito <img src="assets/buy_car.svg"/>
-            </div>
-            <span class="number">${productInformation.price} $</span>
+            </button>
+            <p class="number">${productInformation.price} $</p>
           </div>
         </div>
       </div> `;
-    const containerProduct = document.createElement("div");
+    const containerProduct = document.createElement('div');
     containerProduct.innerHTML = product;
     container.appendChild(containerProduct);
   });
 };
-obtenerProductos().then((response) => showproduct(response));
 
-// Primero, debes obtener los valores de entrada de precio mínimo y máximo del usuario y convertirlos a números decimales utilizando la función parseFloat() . Luego, debes tomar la lista de productos y filtrarlos por aquellos que se encuentran dentro de ese rango de precios. Puedes utilizar el método filter() de JavaScript con una función de retroceso (callback) para realizar la filtración.
-
-document
-  .querySelector(".filter-button")
-  .addEventListener("click", async function () {
-    // Obtener los valores de los campos de entrada
-    const precioMinimo = parseFloat(
-      document.getElementById("precio-minimo").value
-    );
-    const precioMaximo = parseFloat(
-      document.getElementById("precio-maximo").value
-    );
-
-    if (!precioMinimo && !precioMaximo) {
-      alert("Debes ingresar al menos un precio para poder filtrar");
-      return;
+const productAddCounter = (id) =>
+{
+  const product = JSON.parse(localStorage.getItem('carrito')) || [];
+  product.find((product) =>
+  {
+    if (product.id === id)
+    {
+      product.quantity = product.quantity + 1;
     }
-    if (precioMinimo > precioMaximo) {
-      alert("El valor del precio minimo no puede ser mayor al precio maximo");
-      return;
-    }
-
-    const filteredProducts = await obtenerProductos({
-      precioMinimo,
-      precioMaximo,
-    });
-    showproduct(filteredProducts);
   });
 
-  const productSubmit = (element) => {
-    const product = JSON.parse(element.getAttribute('data-product-information'))
-      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-      carrito.push(product);
-      localStorage.setItem("carrito", JSON.stringify(carrito));
+  localStorage.setItem('carrito', JSON.stringify(product));
+  showCart()
+};
+
+const productRemoveCounter = (id) =>
+{
+  const product = JSON.parse(localStorage.getItem('carrito')) || [];
+  product.find((product) =>
+  {
+    if (product.quantity == 1)
+    {
+      return;
+    }
+
+    if (product.id === id)
+    {
+      product.quantity = product.quantity - 1;
+    }
+  });
+
+  localStorage.setItem('carrito', JSON.stringify(product));
+  showCart();
+};
+
+const filterProduct = async () => 
+{
+  const precioMinimo = parseFloat(document.getElementById('precio-minimo').value);
+  const precioMaximo = parseFloat(document.getElementById('precio-maximo').value);
+
+  if (!precioMinimo && !precioMaximo)
+  {
+    getProduct().then((response) => showProduct(response));
+    return;
+  }
+  if (precioMinimo > precioMaximo)
+  {
+    alert('El valor del precio minimo no puede ser mayor al precio maximo');
+    return;
   }
 
+  const filteredProducts = await getProduct({
+    precioMinimo,
+    precioMaximo
+  });
+  showProduct(filteredProducts);
+}
 
+const addCartProduct = (element) =>
+{
+  const product = JSON.parse(element.getAttribute('data-product-information'));
+  product.quantity = 1;
+  const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  const productValidation = carrito.find((productInformation) =>
+  {
+    if (productInformation.id === product.id)
+    {
+      productInformation.quantity = productInformation.quantity + 1;
+      return productInformation;
+    }
+  });
 
-  
+  if (typeof productValidation !== "undefined")
+  {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    showCart();
+    return;
+  }
 
-// Obtenemos los elementos del DOM
-const productos = document.querySelectorAll(".card");
-const botonAgregar = document.querySelectorAll(".buy__button");
-const tbody = document.querySelector("tbody");
-const total = document.querySelector("#total");
+  carrito.push(product);
+  localStorage.setItem('carrito', JSON.stringify(carrito));
+  showCart();
+};
 
-// Función para mostrar el carrito de compras
-function mostrarCarrito() {
-  let tablaHTML = "";
-  let precioTotal = 0;
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  carrito.forEach((item) => {
+const showCart = () =>
+{
+  let tablaHTML = '';
+  let totalPrice = 0;
+  const tbody = document.querySelector('tbody');
+  const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  carrito.forEach((item) =>
+  {
+    totalPrice = totalPrice + (item.price * item.quantity);
     tablaHTML += `
             <tr class="table__item">
-              <td class="number">1</td>
+              <td class="number">${item.id}</td>
               <td>
                 <div class="table__product">
                   <img
@@ -108,107 +166,49 @@ function mostrarCarrito() {
                     width="150rem"
                   />
                   <div class="product__description">
-                    <span class="item">${item.name}</span><br />
-                    <span class="item__description"
-                      >${item.description}</span
-                    >
+                    <p class="item">${item.name}</p>
+                    <p class="item__description">${item.description}</p>
                   </div>
                   <div class="counter">
                     <img
                       class="less"
                       src="assets/less.svg"
                       alt=""
-                      id="boton-less"
+                      onclick="productRemoveCounter(${item.id})"
+                      class=""
                     />
-                    <span class="number" id="valor">0</span>
+                    <p class="number">${item.quantity}</p>
                     <img
                       class="add"
                       src="assets/add.svg"
                       alt=""
-                      id="boton-add"
+                      onclick="productAddCounter(${item.id})"
                     />
                   </div>
                 </div>
               </td>
-              <td class="number">${item.price}</td>
-              <td class=""><img class="delete" src="assets/delete.svg" /></td>
+              <td class="number">${item.quantity * item.price}</td>
+              <td class="">
+                <img 
+                  class="delete" 
+                  src="assets/delete.svg" 
+                  onclick="deleteProduct(${item.id})"
+                />
+              </td>
             </tr>
     `;
-    precioTotal += item.price;
   });
   tbody.innerHTML = tablaHTML;
-  total.textContent = `$${precioTotal}`;
+  showTotal(totalPrice)
 }
 
-// Función para agregar un producto al carrito
-function agregarAlCarrito(evento) {
-  const producto = evento.target.parentElement;
-  const nombre = producto.dataset.nombre;
-  const precio = Number(producto.dataset.precio);
-  const item = {
-    nombre,
-    precio,
-  };
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  carrito.push(item);
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  mostrarCarrito();
+const showTotal = (price) =>
+{
+  const subtotal = document.getElementById('subtotal');
+  const total = document.getElementById('total');
+  subtotal.innerHTML = `${price} $`;
+  total.innerHTML = `${price} $`;
 }
 
-// Añadimos un event listener para cada botón de agregar al carrito
-botonAgregar.forEach((boton) => {
-  boton.addEventListener("click", agregarAlCarrito);
-});
-
-// Mostramos el carrito de compras al cargar la página
-mostrarCarrito();
-
-
-
-
-// Escucha cambios en el almacenamiento local
-window.addEventListener('storage', function(e) {
-  // Actualiza la tabla si se ha agregado un nuevo producto al carrito
-  if (e.key === 'carrito') {
-    actualizarTabla(JSON.parse(e.newValue));
-  }
-});
-// Actualiza la tabla de productos con los datos del carrito
-function actualizarTabla(carrito) {
-  // Vacía la tabla
-  $('#tabla-productos').empty();
-
-  // Recorre los productos en el carrito y agrega una fila a la tabla para cada uno
-  carrito.forEach(function(producto) {
-    var fila = '<tr><td>' + producto.nombre + '</td><td>' + producto.precio + '</td></tr>';
-    $('#tabla-productos').append(fila);
-  });
-}
-
-// Función para agregar un producto al carrito y actualizar el almacenamiento local
-function agregarAlCarrito(producto) {
-  var carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-  carrito.push(producto);
-  localStorage.setItem('carrito', JSON.stringify(carrito));
-}
-
-
-
-
-
-
-// ESTE SI ME SALIO XDDDD
-const botonSumar = document.querySelector("#boton-add");
-const botonRestar = document.querySelector("#boton-less");
-const valor = document.querySelector("#valor");
-
-let contador = 0;
-
- botonSumar.addEventListener("click", () => {
-   contador = contador + 1;
-   valor.textContent = contador;
- })
- botonRestar.addEventListener("click", () => {
-   contador = contador - 1;
-   valor.textContent = contador;
- });
+getProduct().then((response) => showProduct(response));
+showCart();
