@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Eventos</title>
+  </head>
+  <body>
+    <div class="logo"><img src="assets/logo_3.svg" /> <br /></div>
+    <div class="filter-container">
+      <div class="filter">
+        <input
+          class="input-transparente"
+          type="number"
+          id="precio-minimo"
+          name="precio-minimo"
+          placeholder="Precio minimo"
+        /><img src="assets/price.svg" />
+      </div>
+      <div class="filter">
+        <input
+          class="input-transparente"
+          type="number"
+          id="precio-maximo"
+          name="precio-maximo"
+          placeholder="Precio maximo"
+        /><img src="assets/price.svg" />
+      </div>
+      <button class="filter-button">Filtrar</button>
+    </div>
+    <div class="card-container" id="section-product"></div>
+    <div class="section">
+      <div class="the-list">
+        <span class="section__head"
+          ><img src="assets/buy_car2.svg" />Carrito de compras</span
+        >
+        <hr class="line" />
+        <table class="table">
+          <thead>
+            <tr class="table__title">
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="the-check">
+        <section class="account-total">
+          <table>
+            <tr class="totalClass">
+              <th class="botton-line">Total</th>
+              <th class="botton-line"></th>
+            </tr>
+
+            <tr>
+              <td class="td">Subtotal</td>
+              <td class="td__number" id="total">0$</td>
+            </tr>
+            <tr>
+              <td class="td">Descuento</td>
+              <td class="td__number">0$</td>
+            </tr>
+            <tr>
+              <td class="td">Costo de envio</td>
+              <td class="td__number">0$</td>
+            </tr>
+            <tr class="totalClass">
+              <th class="top-line" id="total">0$</th>
+              <th class="top-line"></th>
+            </tr>
+          </table>
+
+          <button class="payment">
+            <span class="payment__text"> Continuar con el pago </span
+            ><img src="assets/card.svg" alt="card" />
+          </button>
+        </section>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

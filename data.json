@@ -1,0 +1,88 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Audifonos Gamer",
+      "description": "Python Fly G9000 Pro Gamer Headset Auriculares profesionales",
+      "image_path": "assets/image/headphones.png",
+      "price": 35
+    },
+    {
+      "id": 2,
+      "name": "Teclado Mecanico",
+      "description": "Obtén un estilo moderno y elegante con este teclado con retroiluminación LED.",
+      "image_path": "assets/image/keyboard.png",
+      "price": 39
+    },
+    {
+      "id": 3,
+      "name": "Tarjeta Grafica",
+      "description": "Mejora el rendimiento visual de tu equipo con esta tarjeta gráfica de alta capacidad.",
+      "image_path": "assets/image/Graphic_card.png",
+      "price": 500
+    },
+    {
+      "id": 4,
+      "name": "Mouse Pad",
+      "description": "Mejora la experiencia de tu mouse con este mouse pad de alta calidad.",
+      "image_path": "assets/image/mouse_pad.png",
+      "price": 24
+    },
+    {
+      "id": 5,
+      "name": "Pendrive 64gb",
+      "description": "USB, una excelente opción para aquellos que buscan capacidad de almacenamiento y velocidad.",
+      "image_path": "assets/image/pendrive.png",
+      "price": 8
+    },
+    {
+      "id": 6,
+      "name": "Televisor",
+      "description": "Disfruta de tus programas favoritos en alta definición con este televisor.",
+      "image_path": "assets/image/tv.png",
+      "price": 1130
+    },
+    {
+      "id": 7,
+      "name": "Ipad Mini",
+      "description": "Una herramienta poderosa y portátil que te permite llevar tu productividad contigo.",
+      "image_path": "assets/image/ipad_mini.png",
+      "price": 85
+    },
+    {
+      "id": 8,
+      "name": "Xiaomi One Plus",
+      "description": "Este móvil ofrece una experiencia de alta calidad, un diseño elegante y moderno.",
+      "image_path": "assets/image/xiaomi_one_plus.png",
+      "price": 270
+    },
+    {
+      "id": 9,
+      "name": "Xiaomi Band 2",
+      "description": "Esta pulsera inteligente lo hace fácil y divertido, mantenerse en forma no tiene por qué ser difícil",
+      "image_path": "assets/image/xiaomi_band2.png",
+      "price": 27
+    },
+    {
+      "id": 10,
+      "name": "Mouse Gamer",
+      "description": "tendrás el control absoluto en tus manos mientras juegas tus videojuegos favoritos.",
+      "image_path": "assets/image/mouse_gamer.png",
+      "price": 30
+    },
+    {
+      "id": 11,
+      "name": "Fuente de Poder",
+      "description": "Esta fuente de poder te ofrece un alto rendimiento en un diseño compacto y eficiente.",
+      "image_path": "assets/image/power_supply.png",
+      "price": 50
+    },
+    {
+      "id": 12,
+      "name": "Memoria Ram",
+      "description": "Potencia tu PC con esta memoria RAM de alto rendimiento.",
+      "image_path": "assets/image/ram.png",
+      "price": 13
+    }
+  ]
+}
